@@ -8,11 +8,9 @@ import { useGlobalContext } from "../context/GlobalProvider";
 
 const App = () => {
   const { isLoading, isLoggedIn } = useGlobalContext();
-  console.log("🚀 ~ App ~ isLoggedIn:", isLoggedIn);
-  console.log("🚀 ~ App ~ isLoading:", isLoading);
 
   // if (!isLoading && isLoggedIn) return <Redirect href="/home" />;
-  if (isLoading && !isLoggedIn) return <Redirect href="/home" />;
+  // if (isLoading && !isLoggedIn) return <Redirect href="/home" />;
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -21,7 +19,7 @@ const App = () => {
           <Image
             source={images.logo}
             resizeMode="contain"
-            className="w-32 h-20"
+            className="w-48 h-20"
           />
 
           <Image
@@ -52,6 +50,12 @@ const App = () => {
             title="Continue with email"
             handlePress={() => router.push("sign-in")}
             containerStyles="w-full mt-7"
+          />
+
+          <CustomButton
+            title="Home"
+            handlePress={() => router.push("/home")}
+            containerStyles="w-full mt-3"
           />
         </View>
       </ScrollView>

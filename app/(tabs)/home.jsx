@@ -2,17 +2,27 @@ import { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { FlatList, Image, RefreshControl, Text, View } from "react-native";
 import { images } from "../../constants";
-// import useAppwrite from "../../lib/useAppwrite";
-// import { getAllPosts, getLatestPosts } from "../../lib/appwrite";
 import { EmptyState, SearchInput, Trending, VideoCard } from "../../components";
+import useAppwrite from "../../lib/useAppwrite";
+import { getAllPosts } from "../../lib/appwrite";
 
 export default function Home() {
-  const [posts, setPosts] = useState([]);
+  const [refreshing, setRefreshing] = useState(false);
+
+  const { data: posts, refetch } = useAppwrite(getAllPosts);
+  console.log("🚀 ~ Home ~ posts:", posts);
+  // const { data: latestPosts } = useAppwrite(getLatestPosts);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await refetch();
+    setRefreshing(false);
+  };
 
   return (
-    <SafeAreaView className="bg-primary">
+    <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={posts || []}
+        data={posts}
         keyExtractor={(item) => item.$id}
         renderItem={({ item }) => (
           <VideoCard
@@ -51,19 +61,19 @@ export default function Home() {
                 Latest Videos
               </Text>
 
-              <Trending />
+              {/* <Trending /> */}
             </View>
           </View>
         )}
-        // ListEmptyComponent={() => (
-        //   <EmptyState
-        //     title="No Videos Found"
-        //     subtitle="No videos created yet"
-        //   />
-        // )}
-        // refreshControl={
-        //   <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-        // }
+        ListEmptyComponent={() => (
+          <EmptyState
+            title="No Videos Found"
+            subtitle="No videos created yet"
+          />
+        )}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
       />
     </SafeAreaView>
   );
