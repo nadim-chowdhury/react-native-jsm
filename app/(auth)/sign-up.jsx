@@ -6,6 +6,7 @@ import { images } from "../../constants";
 import CustomButton from "../../components/CustomButton";
 import FormField from "../../components/FormField";
 import { createUser } from "../../lib/appwrite";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 const SignUp = () => {
   const [isSubmitting, setSubmitting] = useState(false);
@@ -15,6 +16,8 @@ const SignUp = () => {
     password: "",
   });
 
+  const { setUser, setIsLogged } = useGlobalContext();
+
   const submit = async () => {
     if (!form.email || !form.password || !form.username) {
       Alert.alert("Error", "Please! fill all the field");
@@ -23,6 +26,8 @@ const SignUp = () => {
 
     try {
       const result = await createUser(form);
+      setUser(result);
+      setIsLogged(true);
 
       router.replace("/home");
     } catch (error) {
@@ -48,7 +53,7 @@ const SignUp = () => {
           />
 
           <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            Sign Up to Aora
+            Sign Up to RNMA
           </Text>
 
           <FormField

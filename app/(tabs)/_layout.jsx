@@ -27,11 +27,11 @@ export default function TabLayout() {
       screenOptions={{
         tabBarShowLabel: false,
         tabBarActiveTintColor: "#00aa99",
-        tabBarInactiveTintColor: "#cdcde0",
+        tabBarInactiveTintColor: "#cdcdcd",
         tabBarStyle: {
-          backgroundColor: "#161622",
+          backgroundColor: "#161616",
           borderTopWidth: 1,
-          borderTopColor: "#232533",
+          borderTopColor: "#232525",
           height: 84,
         },
       }}

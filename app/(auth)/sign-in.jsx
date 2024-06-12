@@ -6,6 +6,7 @@ import CustomButton from "../../components/CustomButton";
 import { useState } from "react";
 import { Link, router } from "expo-router";
 import { signIn } from "../../lib/appwrite";
+import { useGlobalContext } from "../../context/GlobalProvider";
 
 export default function SignIn() {
   const [form, setForm] = useState({
@@ -13,6 +14,8 @@ export default function SignIn() {
     password: "",
   });
   const [isSubmitting, setSubmitting] = useState(false);
+
+  const { setUser, setIsLogged } = useGlobalContext();
 
   const submit = async () => {
     if (!form.email || !form.password) {
@@ -22,7 +25,11 @@ export default function SignIn() {
 
     try {
       await signIn(form);
+      const result = await getCurrentUser();
+      setUser(result);
+      setIsLogged(true);
 
+      Alert.alert("Success", "User signed in successfully");
       router.replace("/home");
     } catch (error) {
       Alert.alert("Error", error.message);
@@ -38,11 +45,11 @@ export default function SignIn() {
           <Image
             source={images.logo}
             resizeMode="contain"
-            className="w-[115px] h-[34px]"
+            className="w-[112px] h-[34px]"
           />
 
           <Text className="text-2xl font-semibold text-white mt-10 font-psemibold">
-            Log in to Aora
+            Log in to RNMA
           </Text>
 
           <FormField
